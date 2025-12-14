@@ -386,7 +386,7 @@ func (reader *wasmReader) readValTypes() []ValType {
 func (reader *wasmReader) readValType() ValType {
 	vt := reader.readByte()
 	switch vt {
-	case ValTypeI32, ValTypeI64, ValTypeF32, ValTypeF64:
+	case ValTypeI32, ValTypeI64, ValTypeF32, ValTypeF64, ValTypeExternRef:
 	default:
 		panic(fmt.Errorf("malformed value type: %d", vt))
 	}

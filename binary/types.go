@@ -6,10 +6,11 @@ import (
 )
 
 const (
-	ValTypeI32 ValType = 0x7F // i32
-	ValTypeI64 ValType = 0x7E // i64
-	ValTypeF32 ValType = 0x7D // f32
-	ValTypeF64 ValType = 0x7C // f64
+	ValTypeI32     ValType = 0x7F // i32
+	ValTypeI64     ValType = 0x7E // i64
+	ValTypeF32     ValType = 0x7D // f32
+	ValTypeF64     ValType = 0x7C // f64
+	ValTypeExternRef ValType = 0x6F // externref
 
 	BlockTypeI32   BlockType = -1  // ()->(i32)
 	BlockTypeI64   BlockType = -2  // ()->(i64)
@@ -61,6 +62,8 @@ func ValTypeToStr(vt ValType) string {
 		return "f32"
 	case ValTypeF64:
 		return "f64"
+	case ValTypeExternRef:
+		return "externref"
 	default:
 		panic(fmt.Errorf("invalid valtype: %d", vt))
 	}
