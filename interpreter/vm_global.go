@@ -1,8 +1,8 @@
 package interpreter
 
 import (
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
 )
 
 var _ instance.Global = (*globalVar)(nil)
@@ -31,6 +31,7 @@ func (g *globalVar) Type() binary.GlobalType {
 func (g *globalVar) GetAsU64() uint64 {
 	return g.val
 }
+
 func (g *globalVar) SetAsU64(val uint64) {
 	if g._type.Mut != 1 {
 		panic(errImmutableGlobal)
@@ -41,6 +42,7 @@ func (g *globalVar) SetAsU64(val uint64) {
 func (g *globalVar) Get() instance.WasmVal {
 	return wrapU64(g._type.ValType, g.val)
 }
+
 func (g *globalVar) Set(val instance.WasmVal) {
 	g.val = unwrapU64(g._type.ValType, val)
 }

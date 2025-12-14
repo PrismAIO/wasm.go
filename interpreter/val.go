@@ -3,7 +3,7 @@ package interpreter
 import (
 	"math"
 
-	"github.com/zxh0/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 func wrapU64(vt binary.ValType, val uint64) interface{} {

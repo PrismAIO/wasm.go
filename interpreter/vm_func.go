@@ -3,8 +3,8 @@ package interpreter
 import (
 	"fmt"
 
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
 )
 
 var _ instance.Function = (*vmFunc)(nil)
@@ -17,16 +17,17 @@ type vmFunc struct {
 }
 
 func newExternalFunc(ft binary.FuncType,
-	f instance.Function) vmFunc {
-
+	f instance.Function,
+) vmFunc {
 	return vmFunc{
 		_type: ft,
 		_func: f,
 	}
 }
-func newInternalFunc(vm *vm, ft binary.FuncType,
-	code binary.Code) vmFunc {
 
+func newInternalFunc(vm *vm, ft binary.FuncType,
+	code binary.Code,
+) vmFunc {
 	return vmFunc{
 		vm:    vm,
 		_type: ft,
@@ -37,6 +38,7 @@ func newInternalFunc(vm *vm, ft binary.FuncType,
 func (f vmFunc) Type() binary.FuncType {
 	return f._type
 }
+
 func (f vmFunc) Call(args ...WasmVal) ([]WasmVal, error) {
 	if f._func != nil {
 		return f._func.Call(args...)
@@ -79,6 +81,7 @@ func pushArgs(vm *vm, ft binary.FuncType, args []interface{}) {
 		vm.pushU64(unwrapU64(vt, args[i]))
 	}
 }
+
 func popResults(vm *vm, ft binary.FuncType) []interface{} {
 	results := make([]interface{}, len(ft.ResultTypes))
 	for n := len(ft.ResultTypes) - 1; n >= 0; n-- {

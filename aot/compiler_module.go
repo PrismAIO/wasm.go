@@ -3,7 +3,7 @@ package aot
 import (
 	"math"
 
-	"github.com/zxh0/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 type moduleCompiler struct {
@@ -36,9 +36,9 @@ import (
 	"math"
 	"math/bits"
 
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
-	"github.com/zxh0/wasm.go/interpreter"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/interpreter"
 )
 
 var LE = gobin.LittleEndian
@@ -180,6 +180,7 @@ func (m *aotModule) GetMember(name string) interface{} {
 	panic("TODO")
 }`)
 }
+
 func (c *moduleCompiler) genAccGlobalVal() {
 	c.print(`
 func (m *aotModule) GetGlobalVal(name string) (interface{}, error) {
@@ -189,6 +190,7 @@ func (m *aotModule) SetGlobalVal(name string, val interface{}) error {
 	panic("TODO")
 }`)
 }
+
 func (c *moduleCompiler) genInvokeFunc() {
 	c.println("")
 	c.println(`func (m *aotModule) InvokeFunc(name string, args ...interface{}) ([]interface{}, error) {`)

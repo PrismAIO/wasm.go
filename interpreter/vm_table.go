@@ -1,8 +1,8 @@
 package interpreter
 
 import (
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
 )
 
 var _ instance.Table = (*table)(nil)
@@ -34,6 +34,7 @@ func (t *table) Type() binary.TableType {
 func (t *table) Size() uint32 {
 	return uint32(len(t.elems))
 }
+
 func (t *table) Grow(n uint32) {
 	// TODO: check max
 	t.elems = append(t.elems, make([]instance.Function, n)...)
@@ -47,6 +48,7 @@ func (t *table) GetElem(idx uint32) instance.Function {
 	}
 	return elem
 }
+
 func (t *table) SetElem(idx uint32, elem instance.Function) {
 	t.checkIdx(idx)
 	t.elems[idx] = elem

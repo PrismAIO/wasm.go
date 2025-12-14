@@ -1,8 +1,8 @@
 package text
 
 import (
+	"github.com/PrismAIO/wasm.go/text/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/zxh0/wasm.go/text/parser"
 )
 
 type errorReporter struct {

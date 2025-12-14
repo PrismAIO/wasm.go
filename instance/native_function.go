@@ -4,7 +4,7 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/zxh0/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 var _ Function = (*nativeFunction)(nil)
@@ -19,6 +19,7 @@ type nativeFunction struct {
 func (nf nativeFunction) Type() binary.FuncType {
 	return nf.t
 }
+
 func (nf nativeFunction) Call(args ...WasmVal) ([]WasmVal, error) {
 	return nf.f(args)
 }
@@ -37,8 +38,8 @@ func wrapNativeFunc(nf interface{}) (Function, error) {
 }
 
 func callNativeFunc(ft binary.FuncType,
-	nf interface{}, args ...WasmVal) ([]WasmVal, error) {
-
+	nf interface{}, args ...WasmVal,
+) ([]WasmVal, error) {
 	paramCount := len(ft.ParamTypes)
 	resultCount := len(ft.ResultTypes)
 	if paramCount != len(args) {

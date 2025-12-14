@@ -1,8 +1,8 @@
 package interpreter
 
 import (
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
 )
 
 var _ instance.Memory = (*memory)(nil)
@@ -31,6 +31,7 @@ func (mem *memory) Type() binary.MemType {
 func (mem *memory) Size() uint32 {
 	return uint32(len(mem.data) / binary.PageSize)
 }
+
 func (mem *memory) Grow(n uint32) uint32 {
 	oldSize := mem.Size()
 	if n == 0 {
@@ -55,6 +56,7 @@ func (mem *memory) Read(offset uint64, buf []byte) {
 	mem.checkOffset(offset, len(buf))
 	copy(buf, mem.data[offset:])
 }
+
 func (mem *memory) Write(offset uint64, data []byte) {
 	mem.checkOffset(offset, len(data))
 	copy(mem.data[offset:], data)

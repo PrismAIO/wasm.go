@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/zxh0/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/instance"
 )
 
 func newTestEnv() instance.Module {
@@ -27,6 +27,7 @@ func assertTrue(args []interface{}) ([]interface{}, error) {
 	}
 	panic(fmt.Errorf("not true: %v", args))
 }
+
 func assertFalse(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("assert_false: %v\n", args)
 	if args[0].(int32) == 0 {
@@ -34,6 +35,7 @@ func assertFalse(args []interface{}) ([]interface{}, error) {
 	}
 	panic(fmt.Errorf("not false: %v", args))
 }
+
 func assertEqI32(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("assert_eq_i32: %v\n", args)
 	if args[0].(int32) == args[1].(int32) {
@@ -41,6 +43,7 @@ func assertEqI32(args []interface{}) ([]interface{}, error) {
 	}
 	panic(fmt.Errorf("not equal: %v", args))
 }
+
 func assertEqI64(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("assert_eq_i64: %v\n", args)
 	if args[0].(int64) == args[1].(int64) {
@@ -48,6 +51,7 @@ func assertEqI64(args []interface{}) ([]interface{}, error) {
 	}
 	panic(fmt.Errorf("not equal: %v", args))
 }
+
 func assertEqF32(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("assert_eq_f32: %v\n", args)
 	if args[0].(float32) == args[1].(float32) {
@@ -55,6 +59,7 @@ func assertEqF32(args []interface{}) ([]interface{}, error) {
 	}
 	panic(fmt.Errorf("not equal: %v", args))
 }
+
 func assertEqF64(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("assert_eq_f64: %v\n", args)
 	if args[0].(float64) == args[1].(float64) {
@@ -67,10 +72,12 @@ func printI32(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("%v\n", args[0])
 	return nil, nil
 }
+
 func printI64(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("%v\n", args[0])
 	return nil, nil
 }
+
 func printChar(args []interface{}) ([]interface{}, error) {
 	fmt.Printf("%c", args[0])
 	return nil, nil

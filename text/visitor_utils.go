@@ -1,9 +1,9 @@
 package text
 
 import (
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/text/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/text/parser"
 )
 
 func getExpr(node parser.IExprContext, v antlr.ParseTreeVisitor) []binary.Instruction {
@@ -25,6 +25,7 @@ func getStr(node antlr.TerminalNode) string {
 	text := node.GetText()
 	return text[1 : len(text)-1]
 }
+
 func getAllStr(nodes []antlr.TerminalNode) string {
 	s := ""
 	for _, node := range nodes {

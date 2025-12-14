@@ -1,6 +1,6 @@
 package text
 
-import "github.com/zxh0/wasm.go/binary"
+import "github.com/PrismAIO/wasm.go/binary"
 
 const (
 	ActionInvoke = 1

@@ -1,7 +1,7 @@
 package aot
 
 import (
-	"github.com/zxh0/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 type moduleInfo struct {

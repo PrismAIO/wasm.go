@@ -3,9 +3,9 @@ package spectest
 import (
 	"fmt"
 
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
-	"github.com/zxh0/wasm.go/interpreter"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/interpreter"
 )
 
 const Debug = false

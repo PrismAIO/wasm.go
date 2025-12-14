@@ -1,9 +1,9 @@
 package text
 
 import (
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/text/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/text/parser"
 )
 
 // WAT Module
@@ -14,10 +14,12 @@ func CompileModuleFile(filename string) (*binary.Module, error) {
 	}
 	return CompileModule(input)
 }
+
 func CompileModuleStr(s string) (*binary.Module, error) {
 	input := antlr.NewInputStream(s)
 	return CompileModule(input)
 }
+
 func CompileModule(input antlr.CharStream) (m *binary.Module, err error) {
 	errListener := &ErrorListener{}
 	p := newParser(input, errListener)
@@ -42,10 +44,12 @@ func CompileScriptFile(filename string) (*Script, error) {
 	}
 	return CompileScript(input)
 }
+
 func CompileScriptStr(s string) (*Script, error) {
 	input := antlr.NewInputStream(s)
 	return CompileScript(input)
 }
+
 func CompileScript(input antlr.CharStream) (s *Script, err error) {
 	errListener := &ErrorListener{}
 	p := newParser(input, errListener)
@@ -63,14 +67,14 @@ func CompileScript(input antlr.CharStream) (s *Script, err error) {
 }
 
 func newParser(input antlr.CharStream,
-	errListener antlr.ErrorListener) *parser.WASTParser {
-
+	errListener antlr.ErrorListener,
+) *parser.WASTParser {
 	lexer := parser.NewWASTLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	p := parser.NewWASTParser(stream)
 	p.RemoveErrorListeners()
 	p.AddErrorListener(errListener)
-	//p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
+	// p.AddErrorListener(antlr.NewDiagnosticErrorListener(true))
 	p.BuildParseTrees = true
 	return p
 }

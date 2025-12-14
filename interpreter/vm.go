@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
-	"github.com/zxh0/wasm.go/validator"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/validator"
 )
 
 var _ instance.Module = (*vm)(nil)
@@ -68,6 +68,7 @@ func (vm *vm) linkImports(mm instance.Map) {
 		}
 	}
 }
+
 func (vm *vm) linkImport(m instance.Module, imp binary.Import) {
 	exported := m.GetMember(imp.Name)
 	if exported == nil {
@@ -128,6 +129,7 @@ func (vm *vm) initTableAndMem() {
 	vm.initTable(elemOffsets)
 	vm.initMemory(dataOffsets)
 }
+
 func (vm *vm) calcElemOffsets() []uint32 {
 	offsets := make([]uint32, len(vm.module.ElemSec))
 	for i, elem := range vm.module.ElemSec {
@@ -144,6 +146,7 @@ func (vm *vm) calcElemOffsets() []uint32 {
 	}
 	return offsets
 }
+
 func (vm *vm) calcDataOffsets() []uint64 {
 	offsets := make([]uint64, len(vm.module.DataSec))
 	for i, data := range vm.module.DataSec {
@@ -160,6 +163,7 @@ func (vm *vm) calcDataOffsets() []uint64 {
 	}
 	return offsets
 }
+
 func (vm *vm) initTable(offsets []uint32) {
 	for i, elem := range vm.module.ElemSec {
 		for j, fIdx := range elem.Init {
@@ -169,6 +173,7 @@ func (vm *vm) initTable(offsets []uint32) {
 		}
 	}
 }
+
 func (vm *vm) initMemory(offsets []uint64) {
 	for i, data := range vm.module.DataSec {
 		vm.memory.Write(offsets[i], data.Init)
@@ -192,6 +197,7 @@ func (vm *vm) execConstExpr(expr []binary.Instruction) {
 		vm.execInstr(instr)
 	}
 }
+
 func (vm *vm) execStartFunc() {
 	if vm.module.StartSec != nil {
 		idx := *vm.module.StartSec
@@ -202,8 +208,8 @@ func (vm *vm) execStartFunc() {
 /* block stack */
 
 func (vm *vm) enterBlock(opcode byte,
-	bt binary.FuncType, instrs []binary.Instruction) {
-
+	bt binary.FuncType, instrs []binary.Instruction,
+) {
 	bp := vm.stackSize() - len(bt.ParamTypes)
 	cf := newControlFrame(opcode, bt, instrs, bp)
 	vm.pushControlFrame(cf)
@@ -211,10 +217,12 @@ func (vm *vm) enterBlock(opcode byte,
 		vm.local0Idx = uint32(bp)
 	}
 }
+
 func (vm *vm) exitBlock() {
 	cf := vm.popControlFrame()
 	vm.clearBlock(cf)
 }
+
 func (vm *vm) clearBlock(cf *controlFrame) {
 	results := vm.popU64s(len(cf.bt.ResultTypes))
 	vm.popU64s(vm.stackSize() - cf.bp)
@@ -224,6 +232,7 @@ func (vm *vm) clearBlock(cf *controlFrame) {
 		vm.local0Idx = uint32(lastCallFrame.bp)
 	}
 }
+
 func (vm *vm) resetBlock(cf *controlFrame) {
 	results := vm.popU64s(len(cf.bt.ParamTypes))
 	vm.popU64s(vm.stackSize() - cf.bp)
@@ -303,6 +312,7 @@ func (vm *vm) InvokeFunc(name string, args ...WasmVal) ([]WasmVal, error) {
 	}
 	return nil, fmt.Errorf("function not found: " + name)
 }
+
 func (vm vm) GetGlobalVal(name string) (WasmVal, error) {
 	m := vm.GetMember(name)
 	if m != nil {
@@ -312,6 +322,7 @@ func (vm vm) GetGlobalVal(name string) (WasmVal, error) {
 	}
 	return nil, fmt.Errorf("global not found: " + name)
 }
+
 func (vm vm) SetGlobalVal(name string, val WasmVal) error {
 	m := vm.GetMember(name)
 	if m != nil {
@@ -328,10 +339,12 @@ func (vm vm) SetGlobalVal(name string, val WasmVal) error {
 func isFuncTypeMatch(expected, actual binary.FuncType) bool {
 	return fmt.Sprintf("%s", expected) == fmt.Sprintf("%s", actual)
 }
+
 func isGlobalTypeMatch(expected, actual binary.GlobalType) bool {
 	return actual.ValType == expected.ValType &&
 		actual.Mut == expected.Mut
 }
+
 func isLimitsMatch(expected, actual binary.Limits) bool {
 	return actual.Min >= expected.Min &&
 		(expected.Max == 0 || actual.Max > 0 && actual.Max <= expected.Max)

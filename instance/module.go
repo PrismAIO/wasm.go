@@ -1,9 +1,11 @@
 package instance
 
-import "github.com/zxh0/wasm.go/binary"
+import "github.com/PrismAIO/wasm.go/binary"
 
-type WasmVal = interface{}
-type Map = map[string]Module
+type (
+	WasmVal = interface{}
+	Map     = map[string]Module
+)
 
 type Module interface {
 	GetMember(name string) interface{}

@@ -3,8 +3,8 @@ package interpreter
 import (
 	"testing"
 
+	"github.com/PrismAIO/wasm.go/binary"
 	"github.com/stretchr/testify/require"
-	"github.com/zxh0/wasm.go/binary"
 )
 
 func TestMemSizeAndGrow(t *testing.T) {
@@ -39,8 +39,8 @@ func TestMemOps(t *testing.T) {
 }
 
 func testMemOp(t *testing.T, vm *vm, storeOp, loadOp byte,
-	offset, i uint32, val interface{}) {
-
+	offset, i uint32, val interface{},
+) {
 	memArg := binary.MemArg{Offset: offset}
 
 	// store

@@ -3,8 +3,8 @@ package interpreter
 import (
 	"testing"
 
+	"github.com/PrismAIO/wasm.go/binary"
 	"github.com/stretchr/testify/require"
-	"github.com/zxh0/wasm.go/binary"
 )
 
 func TestOperandStack(t *testing.T) {

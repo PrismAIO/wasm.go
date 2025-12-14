@@ -1,7 +1,7 @@
 package text
 
 import (
-	"github.com/zxh0/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 func newInstruction(opname string) binary.Instruction {
@@ -10,6 +10,7 @@ func newInstruction(opname string) binary.Instruction {
 	}
 	return newTruncSat(opname)
 }
+
 func newTruncSat(opname string) binary.Instruction {
 	instr := binary.Instruction{Opcode: binary.TruncSat}
 	switch opname {
@@ -43,8 +44,8 @@ func newI32Const0() binary.Instruction {
 }
 
 func newBlockInstr(opname string, bt binary.BlockType,
-	expr1, expr2 []binary.Instruction) binary.Instruction {
-
+	expr1, expr2 []binary.Instruction,
+) binary.Instruction {
 	instr := newInstruction(opname)
 	switch instr.Opcode {
 	case binary.Block, binary.Loop:

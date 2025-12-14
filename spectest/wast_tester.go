@@ -5,9 +5,9 @@ import (
 	"math"
 	"strings"
 
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
-	"github.com/zxh0/wasm.go/text"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/text"
 )
 
 type wastTester struct {
@@ -69,6 +69,7 @@ func (t *wastTester) instantiate(m *text.WatModule) (err error) {
 	}
 	return
 }
+
 func (t *wastTester) instantiateBin(m *text.BinaryModule) {
 	tmp, err := t.wasmImpl.InstantiateBin(m.Data, t.instances)
 	if err != nil {
@@ -127,10 +128,10 @@ func (t *wastTester) runAction(a *text.Action) ([]interface{}, error) {
 
 	switch a.Kind {
 	case text.ActionInvoke:
-		//println("invoke " + a.ItemName)
+		// println("invoke " + a.ItemName)
 		return _i.InvokeFunc(a.ItemName, getConsts(a.Expr)...)
 	case text.ActionGet:
-		//println("get " + a.ItemName)
+		// println("get " + a.ItemName)
 		val, err := _i.GetGlobalVal(a.ItemName)
 		return []interface{}{val}, err
 	default:
@@ -170,6 +171,7 @@ func assertReturn(a *text.Assertion, results []interface{}, err error) error {
 
 	return nil
 }
+
 func assertTrap(a *text.Assertion, results []interface{}, err error) error {
 	if err == nil {
 		return fmt.Errorf("line: %d, expected trap: %v, got: %v",
@@ -181,6 +183,7 @@ func assertTrap(a *text.Assertion, results []interface{}, err error) error {
 	}
 	return nil
 }
+
 func assertError(a *text.Assertion, err error) error {
 	if err == nil || strings.Index(err.Error(), a.Failure) < 0 {
 		return fmt.Errorf("line: %d, expected: %v, got: %v",
@@ -212,6 +215,7 @@ func isNaN32(x interface{}) bool {
 	f, ok := x.(float32)
 	return ok && math.IsNaN(float64(f))
 }
+
 func isNaN64(x interface{}) bool {
 	f, ok := x.(float64)
 	return ok && math.IsNaN(f)

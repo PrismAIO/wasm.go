@@ -27,18 +27,18 @@ An experimental [Wasm](https://webassembly.org/) implementation written in Go.
 Interpreter mode:
 
 ```bash
-$ git clone https://github.com/zxh0/wasm.go
+$ git clone https://github.com/PrismAIO/wasm.go
 $ cd wasm.go
-$ go run github.com/zxh0/wasm.go/cmd/wasmgo hw.wat
+$ go run github.com/PrismAIO/wasm.go/cmd/wasmgo hw.wat
 ```
 
 AOT mode:
 
 ```bash
-$ git clone https://github.com/zxh0/wasm.go
+$ git clone https://github.com/PrismAIO/wasm.go
 $ cd wasm.go
-$ go run github.com/zxh0/wasm.go/cmd/wasmgo -aot hw.wat > hw.wasm.go
+$ go run github.com/PrismAIO/wasm.go/cmd/wasmgo -aot hw.wat > hw.wasm.go
 $ go build -buildmode=plugin -o hw.so hw.wasm.go
-$ go run github.com/zxh0/wasm.go/cmd/wasmgo hw.so
+$ go run github.com/PrismAIO/wasm.go/cmd/wasmgo hw.so
 ```
 

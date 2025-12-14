@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
-go build github.com/zxh0/wasm.go/cmd/wasmgo
+go build github.com/PrismAIO/wasm.go/cmd/wasmgo
 
 WAST_DIR=./spec/test/core
 for f in $WAST_DIR/*.wast ; do

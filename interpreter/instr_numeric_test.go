@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/PrismAIO/wasm.go/binary"
 	"github.com/stretchr/testify/require"
-	"github.com/zxh0/wasm.go/binary"
 )
 
 func TestConstOps(t *testing.T) {
@@ -239,12 +239,15 @@ func testI64TruncSat(t *testing.T, args byte, b, c interface{}) {
 func testI32UnOp(t *testing.T, opcode byte, b, c int32) {
 	testI32BinOp(t, opcode, 0, b, c)
 }
+
 func testI64UnOp(t *testing.T, opcode byte, b, c int64) {
 	testI64BinOp(t, opcode, 0, b, c)
 }
+
 func testF32UnOp(t *testing.T, opcode byte, b, c float32) {
 	testF32BinOp(t, opcode, 0, b, c)
 }
+
 func testF64UnOp(t *testing.T, opcode byte, b, c float64) {
 	testF64BinOp(t, opcode, 0, b, c)
 }
@@ -252,18 +255,23 @@ func testF64UnOp(t *testing.T, opcode byte, b, c float64) {
 func testI32BinOp(t *testing.T, opcode byte, a, b, c int32) {
 	testBinOp(t, opcode, a, b, c)
 }
+
 func testI64BinOp(t *testing.T, opcode byte, a, b, c int64) {
 	testBinOp(t, opcode, a, b, c)
 }
+
 func testF32BinCmp(t *testing.T, opcode byte, a, b float32, c int32) {
 	testBinOp(t, opcode, a, b, c)
 }
+
 func testF64BinCmp(t *testing.T, opcode byte, a, b float64, c int32) {
 	testBinOp(t, opcode, a, b, c)
 }
+
 func testF32BinOp(t *testing.T, opcode byte, a, b, c float32) {
 	testBinOp(t, opcode, a, b, c)
 }
+
 func testF64BinOp(t *testing.T, opcode byte, a, b, c float64) {
 	testBinOp(t, opcode, a, b, c)
 }
@@ -271,6 +279,7 @@ func testF64BinOp(t *testing.T, opcode byte, a, b, c float64) {
 func testUnOp(t *testing.T, opcode byte, b, c interface{}) {
 	testBinOp(t, opcode, int32(0), b, c)
 }
+
 func testBinOp(t *testing.T, opcode byte, a, b, c interface{}) {
 	vm := &vm{}
 	pushVal(vm, a)
@@ -293,6 +302,7 @@ func pushVal(vm *vm, val interface{}) {
 		panic(fmt.Errorf("wrong type: %v", val))
 	}
 }
+
 func popVal(vm *vm, typeInfo interface{}) interface{} {
 	switch typeInfo.(type) {
 	case int32:

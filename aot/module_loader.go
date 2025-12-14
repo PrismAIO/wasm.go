@@ -4,7 +4,7 @@ import (
 	"errors"
 	"plugin"
 
-	"github.com/zxh0/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/instance"
 )
 
 type NewFn = func(instance.Map) (instance.Module, error)

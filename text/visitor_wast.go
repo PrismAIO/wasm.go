@@ -3,8 +3,8 @@ package text
 import (
 	"math"
 
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/text/parser"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/text/parser"
 )
 
 var _ parser.WASTVisitor = (*wastVisitor)(nil)
@@ -121,6 +121,7 @@ func (v *wastVisitor) VisitAssertion(ctx *parser.AssertionContext) interface{} {
 
 	return &a
 }
+
 func (v *wastVisitor) VisitExpected(ctx *parser.ExpectedContext) interface{} {
 	if ctx.GetNan() != nil {
 		instr := newInstruction(ctx.GetOp().GetText())

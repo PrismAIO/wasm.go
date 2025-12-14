@@ -3,9 +3,9 @@ package interpreter
 import (
 	"testing"
 
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
 	"github.com/stretchr/testify/require"
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
 )
 
 func TestLocal(t *testing.T) {

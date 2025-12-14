@@ -1,6 +1,6 @@
 package interpreter
 
-import "github.com/zxh0/wasm.go/binary"
+import "github.com/PrismAIO/wasm.go/binary"
 
 type instrFn = func(vm *vm, args interface{})
 

@@ -1,6 +1,6 @@
 package aot
 
-import "github.com/zxh0/wasm.go/binary"
+import "github.com/PrismAIO/wasm.go/binary"
 
 func isBrTarget(block binary.Expr) bool {
 	n := len(block)
@@ -56,7 +56,7 @@ func analyzeExpr(depth uint32, expr binary.Expr) (allTargets []uint32) {
 			}
 			allTargets = append(allTargets, depth-args.Default)
 		case binary.Return:
-			//allTargets = append(allTargets, 0)
+			// allTargets = append(allTargets, 0)
 		}
 	}
 	return

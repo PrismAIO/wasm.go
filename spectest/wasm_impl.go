@@ -1,10 +1,10 @@
 package spectest
 
 import (
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
-	"github.com/zxh0/wasm.go/interpreter"
-	"github.com/zxh0/wasm.go/validator"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/interpreter"
+	"github.com/PrismAIO/wasm.go/validator"
 )
 
 var _ WasmImpl = (*WasmInterpreter)(nil)
@@ -15,22 +15,21 @@ type WasmImpl interface {
 	InstantiateBin(data []byte, instances instance.Map) (instance.Module, error)
 }
 
-type WasmInterpreter struct {
-}
+type WasmInterpreter struct{}
 
 func (WasmInterpreter) Validate(m binary.Module) error {
 	return validator.Validate(m)
 }
 
 func (WasmInterpreter) Instantiate(
-	m binary.Module, instances instance.Map) (instance.Module, error) {
-
+	m binary.Module, instances instance.Map,
+) (instance.Module, error) {
 	return interpreter.New(m, instances)
 }
 
 func (WasmInterpreter) InstantiateBin(
-	data []byte, instances instance.Map) (instance.Module, error) {
-
+	data []byte, instances instance.Map,
+) (instance.Module, error) {
 	m, err := binary.Decode(data)
 	if err != nil {
 		return nil, err

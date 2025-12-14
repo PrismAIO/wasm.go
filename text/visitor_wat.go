@@ -3,9 +3,9 @@ package text
 import (
 	"math"
 
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/text/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/text/parser"
 )
 
 var _ parser.WASTVisitor = (*watVisitor)(nil)
@@ -51,6 +51,7 @@ func (v *watVisitor) VisitWatModule(ctx *parser.WatModuleContext) interface{} {
 		Module: v.moduleBuilder.module,
 	}
 }
+
 func (v *watVisitor) VisitModuleField(ctx *parser.ModuleFieldContext) interface{} {
 	switch v.moduleBuilder.pass {
 	case 1: // typeDef
@@ -82,6 +83,7 @@ func (v *watVisitor) VisitImport_(ctx *parser.Import_Context) interface{} {
 	v.moduleBuilder.addImport(imp)
 	return nil
 }
+
 func (v *watVisitor) VisitImportDesc(ctx *parser.ImportDescContext) interface{} {
 	switch ctx.GetKind().GetText() {
 	case "func":
@@ -140,6 +142,7 @@ func (v *watVisitor) VisitFunc_(ctx *parser.Func_Context) interface{} {
 	v.codeBuilder = nil
 	return nil
 }
+
 func (v *watVisitor) VisitFuncLocal(ctx *parser.FuncLocalContext) interface{} {
 	if name := ctx.NAME(); name != nil {
 		vt := ctx.ValType(0).Accept(v).(binary.ValType)
@@ -264,6 +267,7 @@ func (v *watVisitor) VisitExport(ctx *parser.ExportContext) interface{} {
 	}
 	return nil
 }
+
 func (v *watVisitor) VisitExportDesc(ctx *parser.ExportDescContext) interface{} {
 	return []string{
 		ctx.GetKind().GetText(),
@@ -304,6 +308,7 @@ func (v *watVisitor) VisitEmbeddedIm(ctx *parser.EmbeddedImContext) interface{} 
 		Name:   getStr(ctx.STRING(1)),
 	}
 }
+
 func (v *watVisitor) VisitEmbeddedEx(ctx *parser.EmbeddedExContext) interface{} {
 	names := make([]string, 0)
 	for _, name := range ctx.AllSTRING() {
@@ -311,6 +316,7 @@ func (v *watVisitor) VisitEmbeddedEx(ctx *parser.EmbeddedExContext) interface{} 
 	}
 	return names
 }
+
 func (v *watVisitor) VisitTypeUse(ctx *parser.TypeUseContext) interface{} {
 	ft := ctx.FuncType().Accept(v).(binary.FuncType)
 	if _var := ctx.Variable(); _var != nil {
@@ -341,6 +347,7 @@ func (v *watVisitor) VisitTypeUse(ctx *parser.TypeUseContext) interface{} {
 	}
 	return v.moduleBuilder.addTypeUse(ft)
 }
+
 func (v *watVisitor) VisitFuncVars(ctx *parser.FuncVarsContext) interface{} {
 	funcIndices := make([]binary.FuncIdx, 0)
 	for _, _var := range ctx.AllVariable() {
@@ -365,6 +372,7 @@ func (v *watVisitor) VisitValType(ctx *parser.ValTypeContext) interface{} {
 		panic("unreachable")
 	}
 }
+
 func (v *watVisitor) VisitBlockType(ctx *parser.BlockTypeContext) interface{} {
 	if ctx.Result() != nil {
 		result := ctx.Result().Accept(v).([]binary.ValType)
@@ -390,6 +398,7 @@ func (v *watVisitor) VisitBlockType(ctx *parser.BlockTypeContext) interface{} {
 	}
 	return binary.BlockTypeEmpty
 }
+
 func (v *watVisitor) VisitGlobalType(ctx *parser.GlobalTypeContext) interface{} {
 	vt := ctx.ValType().Accept(v).(binary.ValType)
 	mut := binary.MutConst
@@ -401,15 +410,18 @@ func (v *watVisitor) VisitGlobalType(ctx *parser.GlobalTypeContext) interface{} 
 		Mut:     mut,
 	}
 }
+
 func (v *watVisitor) VisitMemoryType(ctx *parser.MemoryTypeContext) interface{} {
 	return ctx.Limits().Accept(v)
 }
+
 func (v *watVisitor) VisitTableType(ctx *parser.TableTypeContext) interface{} {
 	return binary.TableType{
 		ElemType: binary.FuncRef,
 		Limits:   ctx.Limits().Accept(v).(binary.Limits),
 	}
 }
+
 func (v *watVisitor) VisitLimits(ctx *parser.LimitsContext) interface{} {
 	mt := binary.Limits{}
 	mt.Min = parseU32(ctx.Nat(0).GetText())
@@ -419,6 +431,7 @@ func (v *watVisitor) VisitLimits(ctx *parser.LimitsContext) interface{} {
 	}
 	return mt
 }
+
 func (v *watVisitor) VisitFuncType(ctx *parser.FuncTypeContext) interface{} {
 	ft := binary.FuncType{}
 	for _, param := range ctx.AllParam() {
@@ -431,6 +444,7 @@ func (v *watVisitor) VisitFuncType(ctx *parser.FuncTypeContext) interface{} {
 	}
 	return ft
 }
+
 func (v *watVisitor) VisitParam(ctx *parser.ParamContext) interface{} {
 	params := make([]binary.ValType, 0, 1)
 
@@ -452,6 +466,7 @@ func (v *watVisitor) VisitParam(ctx *parser.ParamContext) interface{} {
 
 	return params
 }
+
 func (v *watVisitor) VisitResult(ctx *parser.ResultContext) interface{} {
 	vts := ctx.AllValType()
 	results := make([]binary.ValType, len(vts))

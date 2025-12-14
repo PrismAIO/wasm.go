@@ -1,7 +1,7 @@
 package text
 
 import (
-	"github.com/zxh0/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 type codeBuilder struct {
@@ -49,6 +49,7 @@ func (b *codeBuilder) addLocal(name string, t binary.ValType) error {
 func (b *codeBuilder) enterBlock() {
 	b.blockDepth++
 }
+
 func (b *codeBuilder) exitBlock() {
 	b.blockDepth--
 }

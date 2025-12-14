@@ -2,7 +2,8 @@ package aot
 
 import (
 	"fmt"
-	"github.com/zxh0/wasm.go/binary"
+
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 func Compile(module binary.Module) {

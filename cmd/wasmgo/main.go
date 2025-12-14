@@ -8,14 +8,14 @@ import (
 	"os"
 	"strings"
 
+	"github.com/PrismAIO/wasm.go/aot"
+	"github.com/PrismAIO/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/instance"
+	"github.com/PrismAIO/wasm.go/interpreter"
+	"github.com/PrismAIO/wasm.go/spectest"
+	"github.com/PrismAIO/wasm.go/text"
+	"github.com/PrismAIO/wasm.go/validator"
 	"github.com/urfave/cli/v2"
-	"github.com/zxh0/wasm.go/aot"
-	"github.com/zxh0/wasm.go/binary"
-	"github.com/zxh0/wasm.go/instance"
-	"github.com/zxh0/wasm.go/interpreter"
-	"github.com/zxh0/wasm.go/spectest"
-	"github.com/zxh0/wasm.go/text"
-	"github.com/zxh0/wasm.go/validator"
 )
 
 const appHelpTemplate = `NAME:
@@ -138,7 +138,7 @@ func compileWatToWasm(filename string) error {
 }
 
 func compileWasmToGo(filename string) error {
-	//fmt.Println("AOT " + filename)
+	// fmt.Println("AOT " + filename)
 	if strings.HasSuffix(filename, ".wat") {
 		if m, err := text.CompileModuleFile(filename); err != nil {
 			return err
@@ -170,7 +170,7 @@ func execFile(filename string) error {
 }
 
 func execWat(filename string) error {
-	//fmt.Println("exec " + filename)
+	// fmt.Println("exec " + filename)
 	m, err := text.CompileModuleFile(filename)
 	if err != nil {
 		return err
@@ -187,7 +187,7 @@ func execWat(filename string) error {
 }
 
 func execWasm(filename string) error {
-	//fmt.Println("exec " + filename)
+	// fmt.Println("exec " + filename)
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
@@ -209,7 +209,7 @@ func execWasm(filename string) error {
 }
 
 func execSO(filename string) error {
-	//fmt.Println("exec " + filename)
+	// fmt.Println("exec " + filename)
 	mm := map[string]instance.Module{"env": newTestEnv()}
 	i, err := aot.Load(filename, mm)
 	if err != nil {

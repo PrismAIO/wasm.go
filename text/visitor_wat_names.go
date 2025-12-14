@@ -1,8 +1,8 @@
 package text
 
 import (
+	"github.com/PrismAIO/wasm.go/text/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/zxh0/wasm.go/text/parser"
 )
 
 var _ parser.WASTVisitor = (*watNamesVisitor)(nil)
@@ -39,6 +39,7 @@ func (v *watNamesVisitor) VisitImport_(ctx *parser.Import_Context) interface{} {
 	}
 	return ctx.ImportDesc().Accept(v)
 }
+
 func (v *watNamesVisitor) VisitImportDesc(ctx *parser.ImportDescContext) interface{} {
 	kind := ctx.GetKind().GetText()
 	name := getText(ctx.NAME())
@@ -54,19 +55,22 @@ func (v *watNamesVisitor) VisitImportDesc(ctx *parser.ImportDescContext) interfa
 func (v *watNamesVisitor) VisitFunc_(ctx *parser.Func_Context) interface{} {
 	return v.visitModuleField(ctx, "func", ctx.NAME(), ctx.EmbeddedIm())
 }
+
 func (v *watNamesVisitor) VisitTable(ctx *parser.TableContext) interface{} {
 	return v.visitModuleField(ctx, "table", ctx.NAME(), ctx.EmbeddedIm())
 }
+
 func (v *watNamesVisitor) VisitMemory(ctx *parser.MemoryContext) interface{} {
 	return v.visitModuleField(ctx, "memory", ctx.NAME(), ctx.EmbeddedIm())
 }
+
 func (v *watNamesVisitor) VisitGlobal(ctx *parser.GlobalContext) interface{} {
 	return v.visitModuleField(ctx, "global", ctx.NAME(), ctx.EmbeddedIm())
 }
 
 func (v *watNamesVisitor) visitModuleField(ctx antlr.Tree, kind string,
-	name antlr.TerminalNode, embeddedIm parser.IEmbeddedImContext) interface{} {
-
+	name antlr.TerminalNode, embeddedIm parser.IEmbeddedImContext,
+) interface{} {
 	if err := v.moduleBuilder.checkCount(kind); err != nil {
 		v.reportErr(err, ctx.GetChild(1))
 	}

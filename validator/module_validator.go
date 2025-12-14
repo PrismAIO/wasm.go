@@ -3,7 +3,7 @@ package validator
 import (
 	"fmt"
 
-	"github.com/zxh0/wasm.go/binary"
+	"github.com/PrismAIO/wasm.go/binary"
 )
 
 type moduleValidator struct {
@@ -75,6 +75,7 @@ func (v *moduleValidator) validateImportSec() {
 		}
 	}
 }
+
 func (v *moduleValidator) validateFuncSec() {
 	for i, ftIdx := range v.module.FuncSec {
 		if int(ftIdx) >= v.getTypeCount() {
@@ -82,6 +83,7 @@ func (v *moduleValidator) validateFuncSec() {
 		}
 	}
 }
+
 func (v *moduleValidator) validateTableSec() {
 	for i, table := range v.module.TableSec {
 		if i+v.getImportedTableCount() > 0 {
@@ -92,6 +94,7 @@ func (v *moduleValidator) validateTableSec() {
 		}
 	}
 }
+
 func (v *moduleValidator) validateMemSec() {
 	for i, mem := range v.module.MemSec {
 		if i+v.getImportedMemCount() > 0 {
@@ -102,6 +105,7 @@ func (v *moduleValidator) validateMemSec() {
 		}
 	}
 }
+
 func (v *moduleValidator) validateGlobalSec() {
 	for i, g := range v.module.GlobalSec {
 		if err := v.validateConstExpr(g.Init, g.Type.ValType); err != "" {
@@ -111,6 +115,7 @@ func (v *moduleValidator) validateGlobalSec() {
 		v.globalTypes = append(v.globalTypes, g.Type)
 	}
 }
+
 func (v *moduleValidator) validateExportSec() {
 	exportedNames := map[string]bool{}
 	for i, exp := range v.module.ExportSec {
@@ -144,6 +149,7 @@ func (v *moduleValidator) validateExportSec() {
 		}
 	}
 }
+
 func (v *moduleValidator) validateStartSec() {
 	if v.module.StartSec != nil {
 		idx := int(*v.module.StartSec)
@@ -156,6 +162,7 @@ func (v *moduleValidator) validateStartSec() {
 		}
 	}
 }
+
 func (v *moduleValidator) validateElemSec() {
 	for i, elem := range v.module.ElemSec {
 		if int(elem.Table) >= v.getTableCount() {
@@ -171,6 +178,7 @@ func (v *moduleValidator) validateElemSec() {
 		}
 	}
 }
+
 func (v *moduleValidator) validateCodeSec() {
 	if len(v.module.CodeSec) != len(v.module.FuncSec) {
 		panic(fmt.Errorf("invalid code count"))
@@ -181,6 +189,7 @@ func (v *moduleValidator) validateCodeSec() {
 		validateCode(v, i, code, ft)
 	}
 }
+
 func (v *moduleValidator) validateDataSec() {
 	for i, data := range v.module.DataSec {
 		if int(data.Mem) >= v.getMemCount() {
@@ -194,8 +203,8 @@ func (v *moduleValidator) validateDataSec() {
 
 // TODO
 func (v *moduleValidator) validateConstExpr(expr []binary.Instruction,
-	expectedType binary.ValType) (errMsg string) {
-
+	expectedType binary.ValType,
+) (errMsg string) {
 	if len(expr) > 1 {
 		for _, instr := range expr {
 			switch instr.Opcode {
@@ -240,12 +249,15 @@ func (v *moduleValidator) validateConstExpr(expr []binary.Instruction,
 func (v *moduleValidator) getImportedFuncCount() int {
 	return len(v.importedFuncs)
 }
+
 func (v *moduleValidator) getImportedTableCount() int {
 	return len(v.importedTables)
 }
+
 func (v *moduleValidator) getImportedMemCount() int {
 	return len(v.importedMemories)
 }
+
 func (v *moduleValidator) getImportedGlobalCount() int {
 	return len(v.importedGlobals)
 }
@@ -253,12 +265,15 @@ func (v *moduleValidator) getImportedGlobalCount() int {
 func (v *moduleValidator) getInternalFuncCount() int {
 	return len(v.module.FuncSec)
 }
+
 func (v *moduleValidator) getInternalTableCount() int {
 	return len(v.module.TableSec)
 }
+
 func (v *moduleValidator) getInternalMemCount() int {
 	return len(v.module.MemSec)
 }
+
 func (v *moduleValidator) getInternalGlobalCount() int {
 	return len(v.module.GlobalSec)
 }
@@ -266,15 +281,19 @@ func (v *moduleValidator) getInternalGlobalCount() int {
 func (v *moduleValidator) getTypeCount() int {
 	return len(v.module.TypeSec)
 }
+
 func (v *moduleValidator) getFuncCount() int {
 	return v.getImportedFuncCount() + v.getInternalFuncCount()
 }
+
 func (v *moduleValidator) getTableCount() int {
 	return v.getImportedTableCount() + v.getInternalTableCount()
 }
+
 func (v *moduleValidator) getMemCount() int {
 	return v.getImportedMemCount() + v.getInternalMemCount()
 }
+
 func (v *moduleValidator) getGlobalCount() int {
 	return v.getImportedGlobalCount() + v.getInternalGlobalCount()
 }
@@ -294,9 +313,11 @@ func (v *moduleValidator) getFuncType(fIdx int) (binary.FuncType, bool) {
 func validateTableType(limits binary.Limits) string {
 	return validateLimits(limits, (1<<32)-1, "table")
 }
+
 func validateMemoryType(limits binary.Limits) string {
 	return validateLimits(limits, 1<<16, "mem")
 }
+
 func validateLimits(limits binary.Limits, k uint32, kind string) (errMsg string) {
 	if limits.Min > k {
 		if kind == "mem" {
