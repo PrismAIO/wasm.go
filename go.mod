@@ -1,4 +1,4 @@
-module github.com/zxh0/wasm.go
+module github.com/PrismAIO/wasm.go
 
 go 1.13
 
