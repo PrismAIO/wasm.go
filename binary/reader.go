@@ -387,6 +387,8 @@ func (reader *wasmReader) readValType() ValType {
 	vt := reader.readByte()
 	switch vt {
 	case ValTypeI32, ValTypeI64, ValTypeF32, ValTypeF64, ValTypeExternRef:
+	case 0xFF:
+		vt = ValTypeI32 // V8 compat: 0xFF is -1 as unsigned byte, same as 0x7F (i32) in signed 7-bit
 	default:
 		panic(fmt.Errorf("malformed value type: %d", vt))
 	}
