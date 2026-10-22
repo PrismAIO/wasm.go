@@ -181,3 +181,18 @@ const (
 	I64Extend32S      = 0xC4 // i64.extend32_s
 	TruncSat          = 0xFC // <i32|64>.trunc_sat_<f32|64>_<s|u>
 )
+
+// 0xFC sub-opcodes for bulk memory and tables. 0-7 are the saturating
+// truncations.
+const (
+	MemoryInit = 8 + iota
+	DataDrop
+	MemoryCopy
+	MemoryFill
+	TableInit
+	ElemDrop
+	TableCopy
+	TableGrow
+	TableSize
+	TableFill
+)

@@ -148,10 +148,10 @@ func (reader *wasmReader) readSections(module *Module) {
 			continue
 		}
 
-		if secID > SecDataID {
+		if secID > SecDataCountID {
 			panic(fmt.Errorf("malformed section id: %d", secID))
 		}
-		if secID <= prevSecID {
+		if secOrder(secID) <= secOrder(prevSecID) {
 			panic(fmt.Errorf("junk after last section, id: %d", secID))
 		}
 		prevSecID = secID
@@ -164,6 +164,18 @@ func (reader *wasmReader) readSections(module *Module) {
 		}
 	}
 }
+
+// secOrder is where a section must appear. The data count section is numbered
+// after data but placed between the element and code sections.
+func secOrder(secID byte) int {
+	switch {
+	case secID == SecDataCountID:
+		return int(SecElemID)*2 + 1
+	default:
+		return int(secID) * 2
+	}
+}
+
 func (reader *wasmReader) readCustomSec() CustomSec {
 	secReader := &wasmReader{data: reader.readBytes()}
 	return CustomSec{
@@ -195,6 +207,9 @@ func (reader *wasmReader) readNonCustomSec(secID byte, module *Module) {
 		module.CodeSec = reader.readCodeSec()
 	case SecDataID:
 		module.DataSec = reader.readDataSec()
+	case SecDataCountID:
+		n := reader.readVarU32()
+		module.DataCount = &n
 	}
 }
 
@@ -530,15 +545,44 @@ func (reader *wasmReader) readArgs(opcode byte) interface{} {
 	case F64Const:
 		return reader.readF64()
 	case TruncSat:
-		// The saturating truncation instructions all have a one byte prefix,
-		// whereas the actual opcode is encoded by a variable-length unsigned integer.
-		return uint8(reader.readVarU32())
+		// The 0xFC prefix: the actual opcode is a variable-length unsigned
+		// integer. 0-7 are the saturating truncations and carry nothing else;
+		// 8 and up are the bulk memory and table instructions.
+		sub := uint8(reader.readVarU32())
+		if sub < MemoryInit {
+			return sub
+		}
+		return reader.readMiscArgs(sub)
 	default:
 		if opcode >= I32Load && opcode <= I64Store32 {
 			return reader.readMemArg()
 		}
 		return nil
 	}
+}
+
+func (reader *wasmReader) readMiscArgs(sub uint8) MiscArgs {
+	args := MiscArgs{Sub: sub}
+	switch sub {
+	case MemoryInit:
+		args.Idx[0] = reader.readVarU32() // data_idx
+		reader.readZero()
+	case DataDrop, ElemDrop:
+		args.Idx[0] = reader.readVarU32()
+	case MemoryCopy:
+		reader.readZero()
+		reader.readZero()
+	case MemoryFill:
+		reader.readZero()
+	case TableInit, TableCopy:
+		args.Idx[0] = reader.readVarU32()
+		args.Idx[1] = reader.readVarU32()
+	case TableGrow, TableSize, TableFill:
+		args.Idx[0] = reader.readVarU32() // table_idx
+	default:
+		panic(fmt.Errorf("undefined opcode: 0xfc %d", sub))
+	}
+	return args
 }
 
 func (reader *wasmReader) readBlockArgs() (args BlockArgs) {
