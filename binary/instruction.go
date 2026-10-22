@@ -24,6 +24,14 @@ type BrTableArgs struct {
 	Default LabelIdx
 }
 
+// MiscArgs are the arguments of a 0xFC instruction from bulk memory or
+// tables: Sub is the opcode after the prefix, Idx its data, element or table
+// indices in encoding order.
+type MiscArgs struct {
+	Sub uint8
+	Idx [2]uint32
+}
+
 type MemArg struct {
 	Align  uint32
 	Offset uint32

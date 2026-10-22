@@ -18,6 +18,7 @@ const (
 	SecElemID
 	SecCodeID
 	SecDataID
+	SecDataCountID // bulk memory: sits between the element and code sections
 )
 
 const (
@@ -62,6 +63,7 @@ type Module struct {
 	ElemSec    []Elem
 	CodeSec    []Code
 	DataSec    []Data
+	DataCount  *uint32
 }
 
 //type TypeSec   = []FuncType
